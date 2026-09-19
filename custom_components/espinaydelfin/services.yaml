@@ -1,0 +1,9 @@
+service:
+  sync_invoices:
+    description: "Manually trigger the extraction of invoices from Espina & Delfín."
+    fields:
+      overwrite:
+        description: "If true, replace all existing stored data with the new data from the web."
+        example: true
+        selector:
+          boolean: {}

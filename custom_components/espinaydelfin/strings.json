@@ -1,0 +1,22 @@
+{
+  "translation_keys": {
+    "config": {
+      "step": {
+        "user": {
+          "title": "Espina & Delfín Configuration",
+          "description": "Configure your credentials to retrieve invoices from Espina & Delfín."
+        }
+      },
+      "field": {
+        "username": "Username",
+        "password": "Password",
+        "base_url": "Base URL"
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the provider's website.",
+      "invalid_credentials": "Invalid username or password.",
+      "scraping_failed": "An error occurred while scraping the data."
+    }
+  }
+}
