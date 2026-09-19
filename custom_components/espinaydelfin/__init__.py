@@ -48,7 +48,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
         sub_info, invoices = await scraper.scrape_all()
         
         storage = JsonStorage(storage_dir, sub_info.subscriber_code)
-        storage.save(sub_info, invoices)
+        await storage.save(sub_info, invoices)
         
         _LOGGER.info("EspinayDelfin: Initial sync successful for subscriber %s", sub_info.subscriber_code)
     except Exception as e:
@@ -59,13 +59,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
         raise ConfigEntryNotReady(f"Initial sync failed: {e}")
 
     # Register services
-    async def handle_sync_invoices(call: Dict[str, Any]) -> None:
+    async def handle_sync_invoices(call: Any) -> None:
         """Service to manually trigger sync."""
         entry_id = entry.entry_id
         conf = hass.data[DOMAIN][entry_id]["config"]
         s_dir = hass.data[DOMAIN][entry_id]["storage_dir"]
         
-        overwrite = call.get("overwrite", False)
+        overwrite = call.data.get("overwrite", False)
         
         _LOGGER.info("EspinayDelfin: Manual sync triggered (overwrite=%s)", overwrite)
         
@@ -81,10 +81,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
             storage = JsonStorage(s_dir, sub_info.subscriber_code)
             
             if overwrite:
-                storage.save(sub_info, new_invoices)
+                await storage.save(sub_info, new_invoices)
                 _LOGGER.info("EspinayDelfin: Manual sync (OVERWRITE) successful.")
             else:
-                storage.update_incremental(sub_info, new_invoices)
+                await storage.update_incremental(sub_info, new_invoices)
                 _LOGGER.info("EspinayDelfin: Manual sync (INCREMENTAL) successful.")
                 
         except Exception as e:
