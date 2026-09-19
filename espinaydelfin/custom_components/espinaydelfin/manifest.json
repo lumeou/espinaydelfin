@@ -1,0 +1,13 @@
+{
+  "domain": "espinaydelfin",
+  "name": "Espina & Delfín",
+  "codeowners": ["@lumeou"],
+  "config_flow": true,
+  "dependencies": ["recorder"],
+  "documentation": "https://github.com/lumeou/espinaydelfin",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/lumeou/espinaydelfin/issues",
+  "requirements": ["pydantic"],
+  "single_config_entry": true,
+  "version": "0.1.0"
+}

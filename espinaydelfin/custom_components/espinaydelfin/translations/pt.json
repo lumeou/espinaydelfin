@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Espina & Delfín Configuration",
+        "description": "Configure your credentials to retrieve invoices from Espina & Delfín."
+      }
+    },
+    "field": {
+      "username": "Utilizador",
+      "password": "Palavra-passe",
+      "base_url": "URL Base"
+    }
+  },
+  "error": {
+    "cannot_connect": "Não foi possível ligar-se ao site do fornecedor.",
+    "invalid_credentials": "Utilizador ou palavra-passe inválidos.",
+    "scraping_failed": "Ocorreu um erro ao extrair os dados."
+  }
+}
