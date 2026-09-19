@@ -11,8 +11,8 @@ class JsonStorage:
 
     async def save(self, subscriber_info: SubscriberInfo, invoices: List[Invoice]):
         data = {
-            "subscriber_info": subscriber_info.model_dump(),
-            "invoices": [inv.model_dump(by_alias=True) for inv in invoices]
+            "subscriber_info": subscriber_info.to_dict(),
+            "invoices": [inv.to_dict() for inv in invoices]
         }
         def _save():
             with open(self.file_path, 'w', encoding='utf-8') as f:
