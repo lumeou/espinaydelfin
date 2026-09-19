@@ -81,7 +81,7 @@ class EspinayDelfinInvoicesSensor(CoordinatorEntity, SensorEntity):
         return DeviceInfo(
             identifiers={{self._entry.entry_id}},
             name=self._attr_name,
-            manufacturer="Espinay & Delfín",
+            manufacturer="Espina & Delfín",
         )
 
 class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
@@ -101,7 +101,7 @@ class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
         
         self._name = "Consumption"
         self._unique_id = f"{entry.entry_id}_consumption"
-        self._attr_name = "Espinay & Delfín Consumption"
+        self._attr_name = "Espina & Delfín Consumption"
         self._attr_device_class = None
         self._attr_state_class = None
         self._attr_native_unit_of_measurement = "m³"
@@ -140,5 +140,5 @@ class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
         return DeviceInfo(
             identifiers={{self._entry.entry_id}},
             name=self._attr_name,
-            manufacturer="Espinay & Delfín",
+            manufacturer="Espina & Delfín",
         )
