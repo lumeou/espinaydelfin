@@ -3,18 +3,22 @@
     "step": {
       "user": {
         "title": "Espina & Delfín Configuration",
-        "description": "Configure your credentials to retrieve invoices from Espina & Delfín."
+        "description": "Configure your credentials to retrieve invoices from Espina & Delfín.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "base_url": "Base URL",
+          "browserless_url": "Browserless URL"
+        }
       }
     },
-    "field": {
-      "username": "Username",
-      "password": "Password",
-      "base_url": "Base URL"
+    "error": {
+      "cannot_connect": "Could not connect to the provider's website.",
+      "invalid_credentials": "Invalid username or password.",
+      "scraping_failed": "An error occurred while scraping the data."
+    },
+    "abort": {
+      "already_configured": "This account is already configured"
     }
-  },
-  "error": {
-    "cannot_connect": "Could not connect to the provider's website.",
-    "invalid_credentials": "Invalid username or password.",
-    "scraping_failed": "An error occurred while scraping the data."
   }
 }

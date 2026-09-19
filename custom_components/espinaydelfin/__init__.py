@@ -19,7 +19,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
     base_url = entry.data.get("base_url")
     username = entry.data.get("username")
     password = entry.data.get("password")
-    browser_ws_url = entry.data.get("browser_ws_url")
+    browserless_url = entry.data.get("browserless_url")
 
     # Create directory for storage in HA's config directory
     integration_dir = os.path.dirname(os.path.abspath(__file__))
@@ -31,7 +31,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
         base_url, 
         username, 
         password, 
-        browser_ws_url=browser_ws_url
+        browserless_url=browserless_url
     )
     storage = JsonStorage(storage_dir, "initial_setup") # Placeholder until first scrape
 
@@ -79,7 +79,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
                 conf["base_url"], 
                 conf["username"], 
                 conf["password"],
-                browser_ws_url=conf.get("browser_ws_url")
+                browserless_url=conf.get("browserless_url")
             )
             # We use the coordinator to perform the sync, which handles storage and refreshing
             await coordinator.async_manual_sync(overwrite=overwrite)

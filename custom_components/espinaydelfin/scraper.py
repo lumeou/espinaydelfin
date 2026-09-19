@@ -8,21 +8,21 @@ from typing import List, Optional, Tuple
 from .models import Invoice, SubscriberInfo
 
 class EspinayDelfinScraper:
-    def __init__(self, base_url: str, username: str, password: str, browser_ws_url: Optional[str] = None):
+    def __init__(self, base_url: str, username: str, password: str, browserless_url: Optional[str] = None):
         """
         :param base_url: The base URL of the service.
         :param username: User's login name.
         :param password: User's password.
-        :param browser_ws_url: Optional URL for Browserless (e.g., http://homeassistant.local:3000).
+        :param browserless_url: Optional URL for Browserless (e.g., http://homeassistant.local:3000).
         """
         self.base_url = base_url
         self.username = username
         self.password = password
-        self.browser_ws_url = browser_ws_url
+        self.browserless_url = browserless_url
 
     async def scrape_all(self) -> Tuple[SubscriberInfo, List[Invoice]]:
         """Performs the full scraping process."""
-        if self.browser_ws_url:
+        if self.browserless_url:
             return await self._scrape_via_browserless()
         else:
             raise RuntimeError("Local Playwright is not supported in this version. Please provide a Browserless URL.")
@@ -61,7 +61,7 @@ class EspinayDelfinScraper:
         };
         """
 
-        endpoint = self.browser_ws_url.rstrip("/") + "/function"
+        endpoint = self.browserless_url.rstrip("/") + "/function"
 
         async with aiohttp.ClientSession() as session:
             payload = {

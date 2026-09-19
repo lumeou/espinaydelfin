@@ -3,18 +3,22 @@
     "step": {
       "user": {
         "title": "Espina & Delfín Configuration",
-        "description": "Configure your credentials to retrieve invoices from Espina & Delfín."
+        "description": "Configure your credentials to retrieve invoices from Espina & Delfín.",
+        "data": {
+          "username": "Usuario",
+          "password": "Contraseña",
+          "base_url": "URL Base",
+          "browserless_url": "URL de Browserless (HTTP)"
+        }
       }
     },
-    "field": {
-      "username": "Usuario",
-      "password": "Contraseña",
-      "base_url": "URL Base"
+    "error": {
+      "cannot_connect": "No se pudo conectar con el sitio web del proveedor.",
+      "invalid_credentials": "Usuario o contraseña no válidos.",
+      "scraping_failed": "Ocurrió un error al extraer los datos."
+    },
+    "abort": {
+      "already_configured": "Esta cuenta ya está configurada"
     }
-  },
-  "error": {
-    "cannot_connect": "No se pudo conectar con el sitio web del proveedor.",
-    "invalid_credentials": "Usuario o contraseña no válidos.",
-    "scraping_failed": "Ocurrió un error al extraer los datos."
   }
 }

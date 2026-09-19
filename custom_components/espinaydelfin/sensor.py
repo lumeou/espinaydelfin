@@ -1,3 +1,4 @@
+import re
 from typing import Any, Dict, List, Optional
 
 from homeassistant import config_entries
@@ -17,9 +18,11 @@ async def async_setup_entry(
     """Set up the sensors for the entry."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
+    username = entry.data.get("username", "unknown")
+
     sensors = [
-        EspinayDelfinInvoicesSensor(hass, entry, coordinator),
-        EspinayDelfinConsumptionSensor(hass, entry, coordinator),
+        EspinayDelfinInvoicesSensor(hass, entry, coordinator, username),
+        EspinayDelfinConsumptionSensor(hass, entry, coordinator, username),
     ]
 
     async_add_entities(sensors)
@@ -32,16 +35,18 @@ class EspinayDelfinInvoicesSensor(CoordinatorEntity, SensorEntity):
         hass: Any,
         entry: config_entries.ConfigEntry,
         coordinator: EspinayDelfinUpdateCoordinator,
+        username: str,
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator)
         self._hass = hass
         self._entry = entry
         self._coordinator = coordinator
+        self._username = username
         
         self._name = "Invoices"
-        self._unique_id = f"{entry.entry_id}_invoices"
-        self._attr_name = "Espina & Delfín Invoices"
+        self._attr_unique_id = f"{entry.entry_id}_invoices"
+        self._attr_name = "Invoices"
         self._attr_device_class = None
         self._attr_state_class = None
         self._attr_native_unit_of_measurement = "€"
@@ -54,7 +59,7 @@ class EspinayDelfinInvoicesSensor(CoordinatorEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> Dict[str, Any]:
         """Return entity specific state attributes."""
-        if not self.coordinator.data:
+        if not self.coordinator.subscriber_info and not self.coordinator.invoices:
             return {}
 
         sub_info = self.coordinator.subscriber_info
@@ -79,8 +84,8 @@ class EspinayDelfinInvoicesSensor(CoordinatorEntity, SensorEntity):
     def device_info(self) -> Optional[DeviceInfo]:
         """Return device info."""
         return DeviceInfo(
-            identifiers={{self._entry.entry_id}},
-            name=self._attr_name,
+            identifiers={(DOMAIN, self._entry.entry_id)},
+            name=f"Espina & Delfín {self._username}",
             manufacturer="Espina & Delfín",
         )
 
@@ -92,16 +97,18 @@ class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
         hass: Any,
         entry: config_entries.ConfigEntry,
         coordinator: EspinayDelfinUpdateCoordinator,
+        username: str,
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator)
         self._hass = hass
         self._entry = entry
         self._coordinator = coordinator
-        
+        self._username = username
+
         self._name = "Consumption"
-        self._unique_id = f"{entry.entry_id}_consumption"
-        self._attr_name = "Espina & Delfín Consumption"
+        self._attr_unique_id = f"{entry.entry_id}_consumption"
+        self._attr_name = "Consumption"
         self._attr_device_class = None
         self._attr_state_class = None
         self._attr_native_unit_of_measurement = "m³"
@@ -114,12 +121,12 @@ class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> Dict[str, Any]:
         """Return entity specific state attributes."""
-        if not self.coordinator.data:
+        if not self.coordinator.invoices:
             return {}
 
         invoices = self.coordinator.invoices
         consumption_history = [
-            {"period": inv.period, "consumption": inv.consumption_m3}
+            {"period": inv.period, "period_start": inv.get_period_start(), "consumption": inv.consumption_m3}
             for inv in invoices
         ]
 
@@ -138,7 +145,7 @@ class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
     def device_info(self) -> Optional[DeviceInfo]:
         """Return device info."""
         return DeviceInfo(
-            identifiers={{self._entry.entry_id}},
-            name=self._attr_name,
+            identifiers={(DOMAIN, self._entry.entry_id)},
+            name=f"Espina & Delfín {self._username}",
             manufacturer="Espina & Delfín",
         )
