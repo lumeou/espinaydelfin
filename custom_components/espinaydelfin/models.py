@@ -27,7 +27,6 @@ class Invoice(BaseModel):
         return {
             "doc_number": self.doc_number,
             "period": self.period,
-            "period_start": self.get_period_start(),
             "consumption_m3": self.consumption_m3,
             "amount_euro": self.amount_euro,
             "reference": self.reference,
@@ -39,24 +38,3 @@ class Invoice(BaseModel):
     def to_dict(self) -> Dict[str, Any]:
         """Returns a dictionary using aliases, suitable for storage."""
         return self.model_dump(by_alias=True)
-
-    def get_period_start(self) -> Optional[str]:
-        """Returns the start date of the period in ISO format, if possible."""
-        return _quarter_start(self.period)
-
-def _quarter_start(period: str) -> str | None:
-    """Convierte 'TT/YYYY' (TT = trimestre 01-04) al primer día del trimestre en ISO."""
-    if not period:
-        return None
-    try:
-        q_str, year_str = period.split("/")
-        quarter = int(q_str)
-        year = int(year_str)
-    except (ValueError, AttributeError):
-        return None
-
-    if quarter < 1 or quarter > 4:
-        return None
-
-    start_month = (quarter - 1) * 3 + 1
-    return date(year, start_month, 1).isoformat()

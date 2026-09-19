@@ -126,7 +126,7 @@ class EspinayDelfinConsumptionSensor(CoordinatorEntity, SensorEntity):
 
         invoices = self.coordinator.invoices
         consumption_history = [
-            {"period": inv.period, "period_start": inv.get_period_start(), "consumption": inv.consumption_m3}
+            {"period": inv.period, "consumption": inv.consumption_m3}
             for inv in invoices
         ]
 
